@@ -1,5 +1,6 @@
 from typing import List
 
+import uvicorn
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 
@@ -32,3 +33,7 @@ def create_a_joke(dad: schemas.JokesCreate, db: Session = Depends(get_db)):
 def get_jokes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     db_jokes = crud.get_jokes(db=db, skip=skip, limit=limit)
     return db_jokes
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
