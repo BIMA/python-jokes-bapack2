@@ -1,3 +1,4 @@
+import random
 from typing import List
 
 import uvicorn
@@ -33,6 +34,14 @@ def create_a_joke(dad: schemas.JokesCreate, db: Session = Depends(get_db)):
 def get_jokes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     db_jokes = crud.get_jokes(db=db, skip=skip, limit=limit)
     return db_jokes
+
+
+@app.get("/get_random_jokes/", response_model=schemas.Jokes)
+def get_random_jokes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    db_jokes = crud.get_jokes(db=db, skip=skip, limit=limit)
+    len_db = len(db_jokes)
+    idx = random.randint(0, len_db)
+    return db_jokes[idx]
 
 
 if __name__ == "__main__":
